@@ -1,25 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
+import { useRoomStore } from "./store/useRoomStore";
+import Gallery from "./components/Gallery";
 
 function App() {
+  const room = useRoomStore((s) => s.currentRoom);
+
+  const sceneScale = room !== "main" ? 0.6 : 1;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Canvas camera={{ position: [0, 4, 12], fov: 50 }}>
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[5, 5, 5]} />
+
+      <group scale={[sceneScale, sceneScale, sceneScale]}>
+        <Gallery />
+      </group>
+
+      <OrbitControls enableZoom={false} />
+    </Canvas>
   );
 }
 
